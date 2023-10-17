@@ -50,15 +50,15 @@ class _category_screenState extends State<category_screen> {
                   });
                 },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 2),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: categoryName==categoriesList[index]?Colors.orange:Colors.blue,
                       ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(categoriesList[index],style: TextStyle(fontSize: 13, color: Colors.white),),
+                      padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 3),
+                      child: Text(categoriesList[index],style: TextStyle(fontSize: 16, color: Colors.white),),
                     ),
                   ),
                 ),
@@ -92,8 +92,8 @@ class _category_screenState extends State<category_screen> {
                                   child: CachedNetworkImage(
                                     imageUrl: snapshot.data!.articles![index].urlToImage.toString(),
                                     fit: BoxFit.cover,
-                                    height: height * .18,
-                                    width: width * .3,
+                                    height: height * .14,
+                                    width: width * .27,
                                     placeholder:  (context , url) => Container(child: Center(
                                       child: SpinKitCircle(
                                         size: 50,
@@ -105,16 +105,16 @@ class _category_screenState extends State<category_screen> {
                                 ),
                                 Expanded(
                                   child: Container(
-                                    height:  height * .18,
-                                    padding: EdgeInsets.only(left: 15),
+                                    height:  height * .14,
+                                    padding: EdgeInsets.only(left: 14),
                                     child: Column(
                                       children: [
                                         Text(snapshot.data!.articles![index].title.toString() ,
                                           maxLines: 3,
                                           style: GoogleFonts.poppins(
-                                            fontSize: 15 ,
+                                            fontSize: 14 ,
                                             color: Colors.black54,
-                                            fontWeight: FontWeight.w700
+                                            fontWeight: FontWeight.w600
                                           ),
                                         ),
                                         Spacer(),
@@ -123,15 +123,15 @@ class _category_screenState extends State<category_screen> {
                                           children: [
                                             Text(snapshot.data!.articles![index].source!.name.toString() ,
                                               style: GoogleFonts.poppins(
-                                                  fontSize: 14 ,
+                                                  fontSize: 12 ,
                                                   color: Colors.black54,
-                                                  fontWeight: FontWeight.w600
+                                                  fontWeight: FontWeight.w400
                                               ),
                                             ),
                                             Text(format.format(dateTime) ,
                                               style: GoogleFonts.poppins(
-                                                  fontSize: 15 ,
-                                                  fontWeight: FontWeight.w500
+                                                  fontSize: 10 ,
+                                                  fontWeight: FontWeight.w400
                                               ),
                                             ),
                                           ],

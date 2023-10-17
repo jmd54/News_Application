@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:news_application/models/categories_news_model.dart';
 import 'package:news_application/models/news_headline_model.dart';
 import 'package:news_application/view/category.dart';
 import 'package:news_application/view_model/news_view_model.dart';
@@ -25,6 +26,7 @@ class _home_screenState extends State<home_screen> {
   Widget build(BuildContext context) {
     final height=MediaQuery.sizeOf(context).height*1;
     final width=MediaQuery.sizeOf(context).width*1;
+    String categoryName="General";
 
     return  Scaffold(
       appBar: AppBar(
@@ -145,7 +147,93 @@ class _home_screenState extends State<home_screen> {
                   }
               },)
             ),   
-            
+            SizedBox(height: 50,),
+            Expanded(
+              child: FutureBuilder<CategoriesNewsModel>(
+                future: NewsViewModel().fetchCategoriesNewsApi(categoryName),
+                builder: (BuildContext context, snapshot){
+                                    if(snapshot.connectionState == ConnectionState.waiting){
+                    return const Center(
+                      child: SpinKitCircle(
+                        size: 50,
+                        color: Colors.blue,
+                      ),
+                    );
+                  }else {
+                    return ListView.builder(
+                        itemCount: snapshot.data!.articles!.length,
+                        itemBuilder: (context , index){
+
+                          DateTime dateTime = DateTime.parse(snapshot.data!.articles![index].publishedAt.toString());
+                          return  Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: CachedNetworkImage(
+                                    imageUrl: snapshot.data!.articles![index].urlToImage.toString(),
+                                    fit: BoxFit.cover,
+                                    height: height * .14,
+                                    width: width * .27,
+                                    placeholder:  (context , url) => Container(child: Center(
+                                      child: SpinKitCircle(
+                                        size: 50,
+                                        color: Colors.blue,
+                                      ),
+                                    ),),
+                                    errorWidget: (context, url  ,error) => Icon(Icons.error_outline ,color: Colors.red,),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height:  height * .14,
+                                    padding: EdgeInsets.only(left: 14),
+                                    child: Column(
+                                      children: [
+                                        Text(snapshot.data!.articles![index].title.toString() ,
+                                          maxLines: 3,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14 ,
+                                            color: Colors.black54,
+                                            fontWeight: FontWeight.w600
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(snapshot.data!.articles![index].source!.name.toString() ,
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 12 ,
+                                                  color: Colors.black54,
+                                                  fontWeight: FontWeight.w400
+                                              ),
+                                            ),
+                                            Text(format.format(dateTime) ,
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 10 ,
+                                                  fontWeight: FontWeight.w400
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                    ) ;
+                  }
+
+
+                    
+                },)
+              )
+
       
         ],
       )
